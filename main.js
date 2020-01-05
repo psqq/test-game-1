@@ -1,6 +1,6 @@
 const rot = ROT;
 
-const display = rot.Display({
+const display = new rot.Display({
   width: 30,
   height: 30,
 });
