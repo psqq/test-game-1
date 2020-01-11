@@ -1,5 +1,6 @@
 import * as ecs from "./ecs.js";
 import * as c from "./components.js";
+import Victor from "victor";
 
 export default class BaseSystem extends ecs.System {
   /**

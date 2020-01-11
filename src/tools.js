@@ -1,4 +1,5 @@
 import config from "./config.js";
+import Victor from "victor";
 
 /**
  * @param {new (...arg: any) => T} Class

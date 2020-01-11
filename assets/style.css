@@ -1,0 +1,31 @@
+body {
+    margin: 0;
+    background-color: black;
+    overflow: hidden;
+    color: #bbb;
+    font-size: 12pt;
+}
+
+.screen {
+    padding: 10px;
+    margin: auto;
+    display: none;
+    position: absolute;
+    width: 90%;
+    height: 90%;
+    overflow-y: auto;
+}
+
+.all-info {
+    padding: 10px;
+    margin: auto;
+    position: absolute;
+    left: 50%;
+    right: 5px;
+    top: 10px;
+    bottom: 10px;
+    font-family: monospace;
+    white-space: pre;
+    overflow-y: auto;
+    font-size: 10pt;
+}

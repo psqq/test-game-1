@@ -1,1 +1,2 @@
-# test-game-1
+
+# Game for testing ECS

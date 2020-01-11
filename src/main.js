@@ -1,11 +1,10 @@
-import * as ecs from "./ecs.js";
-import * as c from "./components.js";
-import * as s from "./systems.js";
-import { make, getDirectionByKeyboardEvent } from "./tools.js";
+import * as ecs from "./ecs";
+import * as c from "./components";
+import * as s from "./systems";
+import { make, getDirectionByKeyboardEvent } from "./tools";
+import * as rot from "rot-js";
 
 function main() {
-  const rot = ROT;
-
   const display = new rot.Display({
     width: 30,
     height: 30,
@@ -25,17 +24,13 @@ function main() {
       o.x = 10;
       o.y = 2;
     }),
-    make(c.Move, o => {
-      o.erase();
-    }),
+    make(c.Move, o => { o.erase(); }),
     make(c.Glyph, o => {
       o.ch = '@';
     }),
     make(ecs.Group, o => { o.name = 'player'; }),
     make(ecs.Group, o => { o.name = 'being'; }),
-    make(c.Gold, o => {
-      o.amount = 0;
-    }),
+    make(c.Gold, o => { o.amount = 0; }),
   );
 
   engine.createEntity(
@@ -43,13 +38,11 @@ function main() {
       o.x = 5;
       o.y = 5;
     }),
-    make(c.Gold, o => {
-      o.amount = 10;
-    }),
     make(c.Glyph, o => {
       o.ch = '$';
       o.fg = 'gold';
     }),
+    make(c.Gold, o => { o.amount = 10; }),
     make(ecs.Group, o => { o.name = 'gold'; }),
     make(ecs.Group, o => { o.name = 'not-player'; }),
   );
