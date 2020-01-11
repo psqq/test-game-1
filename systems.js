@@ -32,8 +32,11 @@ export class Move extends ecs.System {
       if (!entity.has(c.Position, c.Move)) {
         continue;
       }
-      const pos = entity.get(c.Position);
       const move = entity.get(c.Move);
+      const pos = entity.get(c.Position);
+      if (!move.isInitialized()) {
+        continue;
+      }
       pos.x += move.dx;
       pos.y += move.dy;
       move.erase();

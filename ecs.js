@@ -12,6 +12,13 @@ export class Engine {
     this.fixedDeltaTime = options.fixedDeltaTime || 0;
     this._uid = 0;
   }
+  getSystem(SystemClass) {
+    for(let system of this.systems) {
+      if (system instanceof SystemClass) {
+        return system;
+      }
+    }
+  }
   /**
    * @type {System} system
    */
@@ -52,22 +59,15 @@ export class Engine {
     }
     return false;
   }
-  updateWhileNeed(systems, entities, maxIters=Infinity) {
-    while(maxIters > 0 && this.isNeedUpdate()) {
-      let dt = 1 / 60;
-      if (this.fixedDeltaTime) {
-        dt = this.fixedDeltaTime;
-      }
-      this.update(systems, entities, dt);
-      maxIters--;
-    }
-  }
   /**
    * @param {System[]} systems
    * @param {Entity[]} entities
    * @param {number} deltaTime
    */
   update(systems, entities, deltaTime) {
+    if (!systems || systems.length == 0 || !entities || entities.length == 0) {
+      return;
+    }
     for(let system of systems) {
       system.update(entities, deltaTime);
     }
