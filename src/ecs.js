@@ -79,6 +79,18 @@ export class Engine {
       system.update(entities, deltaTime);
     }
   }
+  /**
+   * @param {number} deltaTime
+   */
+  updateAll(deltaTime) {
+    this.update(this.getAllSystems(), this.getAllEntities(), deltaTime);
+  }
+  /**
+   * @param {number} deltaTime
+   */
+  updateEntitiesGroup(groupName, deltaTime) {
+    this.update(this.getAllSystems(), this.getEntitiesInGroup(groupName), deltaTime);
+  }
 }
 
 export class Entity {
@@ -98,9 +110,17 @@ export class Entity {
     }
     return false;
   }
+  /**
+   * @param {new (...arg: any) => Component} ComponentClass
+   */
   _hasOne(ComponentClass) {
     return !!this.get(ComponentClass);
   }
+  /**
+   * @param {new (...arg: any) => T} ComponentClass
+   * @returns {T[]}
+   * @template T
+   */
   gets(ComponentClass) {
     let result = [];
     for(let component of this.components) {
@@ -110,9 +130,17 @@ export class Entity {
     }
     return result;
   }
+  /**
+   * @param {new (...arg: any) => T} ComponentClass
+   * @returns {T}
+   * @template T
+   */
   get(ComponentClass) {
     return this.gets(ComponentClass)[0];
   }
+  /**
+   * @param {(new (...arg: any) => Component)[]} ComponentClasses
+   */
   has(...ComponentClasses) {
     for(let ComponentClass of ComponentClasses) {
       if (!this._hasOne(ComponentClass)) {

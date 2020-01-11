@@ -24,8 +24,17 @@ const directionByKeyCode = {
     'ArrowDown': new Victor(0, 1),
 };
 
+const mapSize = new Victor(30, 30);
+
 const config = {
   directionByKeyCode,
+  mapSize,
+  rotjsDisplayOptions: {
+      width: mapSize.x,
+      height: mapSize.y,
+      fontSize: 14,
+      forceSquareRatio: true,
+  },
 };
 
 export default config;

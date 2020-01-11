@@ -1,6 +1,7 @@
 import * as ecs from "./ecs.js";
 import * as c from "./components.js";
 import BaseSystem from "./base-system.js";
+import Victor from "victor";
 
 export class Display extends ecs.System {
   constructor(display) {
@@ -12,12 +13,12 @@ export class Display extends ecs.System {
    * @param {number} deltaTime
    */
   update(entities, deltaTime) {
-    for(let entity of entities) {
+    for (let entity of entities) {
       if (!entity.has(c.Position, c.Glyph)) {
         continue;
       }
-      const {x, y} = entity.get(c.Position);
-      const {fg, bg, ch} = entity.get(c.Glyph);
+      const { x, y } = entity.get(c.Position);
+      const { fg, bg, ch } = entity.get(c.Glyph);
       this.display.draw(x, y, ch, fg, bg);
     }
   }
@@ -37,16 +38,18 @@ export class DisplayAll extends ecs.System {
     const p = (...args) => {
       this.el.innerText += args.join("");
     };
-    for(let e of this.engine.getAllEntities()) {
+    for (let e of this.engine.getAllEntities()) {
       if (this.el.innerText) {
         this.el.innerText += "\n";
       }
       const typeName = e.get(ecs.Group).name;
-      const res = { [typeName]: {
-        id: e.id,
-        components: [],
-      }};
-      for(let c of e.components) {
+      const res = {
+        [typeName]: {
+          id: e.id,
+          components: [],
+        }
+      };
+      for (let c of e.components) {
         res[typeName].components.push({
           [c.constructor.name]: c,
         });
@@ -58,17 +61,28 @@ export class DisplayAll extends ecs.System {
 
 export class Move extends BaseSystem {
   /**
-   * @param {Entity[]} entities
+   * @param {ecs.Entity[]} entities
    * @param {number} deltaTime
    */
   update(entities, deltaTime) {
-    for(let entity of entities) {
+    for (let entity of entities) {
       if (!entity.has(c.Position, c.Move)) {
         continue;
       }
       const move = entity.get(c.Move);
       const pos = entity.get(c.Position);
       if (!move.isInitialized()) {
+        continue;
+      }
+      const newPos =
+        new Victor()
+          .copy(pos)
+          .add(new Victor(move.dx, move.dy));
+      if (!this.isMovable(newPos)) {
+        move.erase();
+        continue;
+      }
+      if (deltaTime <= 0) {
         continue;
       }
       pos.x += move.dx;
