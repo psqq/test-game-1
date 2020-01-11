@@ -3,6 +3,7 @@ import * as c from "./components.js";
 import * as s from "./systems.js";
 import { make, getDirectionByKeyboardEvent } from "./tools.js";
 
+
 const rot = ROT;
 
 const display = new rot.Display({
@@ -39,6 +40,7 @@ engine.addSystem(new s.Move());
 function update() {
   let k = 100;
   while (k > 0 || player.isNeedUpdate()) {
+    console.log("player.isNeedUpdate()", player.isNeedUpdate());
     engine.update(
       engine.getAllSystems(),
       engine.getEntitiesInGroup('player'),

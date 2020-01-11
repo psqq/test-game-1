@@ -33,7 +33,7 @@ export class Move extends ecs.System {
         continue;
       }
       const pos = entity.get(c.Position);
-      const move= entity.get(c.Move);
+      const move = entity.get(c.Move);
       pos.x += move.dx;
       pos.y += move.dy;
       move.erase();
