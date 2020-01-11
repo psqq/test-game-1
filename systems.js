@@ -22,6 +22,34 @@ export class Display extends ecs.System {
   }
 }
 
+export class DisplayAll extends ecs.System {
+  constructor() {
+    super();
+    this.el = document.querySelector(".all-info");
+  }
+  /**
+   * @param {Entity[]} entities
+   * @param {number} deltaTime
+   */
+  update(entities, deltaTime) {
+    this.el.innerText = "";
+    const p = (...args) => {
+      this.el.innerText += args.join("");
+    };
+    for(let e of this.engine.getAllEntities()) {
+      const typeName = e.get(c.Type).name;
+      const res = { [typeName]: {
+        id: e.id,
+        components: {},
+      }};
+      for(let c of e.components) {
+        res[typeName].components[c.constructor.name] = c;
+      }
+      p(JSON.stringify(res, null, 2));
+    }
+  }
+}
+
 export class Move extends ecs.System {
   /**
    * @param {Entity[]} entities

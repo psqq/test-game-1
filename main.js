@@ -12,7 +12,9 @@ function main() {
     forceSquareRatio: true,
   });
 
-  document.body.appendChild(display.getContainer());
+  const appEl = document.querySelector(".app");
+
+  appEl.appendChild(display.getContainer());
 
   const engine = new ecs.Engine({
     fixedDeltaTime: 1,
@@ -29,12 +31,34 @@ function main() {
     make(c.Glyph, o => {
       o.ch = '@';
     }),
+    make(c.Type, o => {
+      o.name = 'player';
+    }),
+    make(ecs.Group, o => {
+      o.name = 'player';
+    }),
+    make(c.Gold, o => {
+      o.amount = 0;
+    }),
+  );
+
+  engine.createEntity(
+    make(c.Gold, o => {
+      o.value = 10;
+    }),
+    make(c.Move, o => {
+      o.erase();
+    }),
+    make(c.Glyph, o => {
+      o.ch = '@';
+    }),
     make(ecs.Group, o => {
       o.name = 'player';
     }),
   );
 
   engine.addSystem(new s.Move());
+  engine.addSystem(new s.DisplayAll());
   engine.addSystem(new s.Display(display));
 
   function update() {
@@ -65,6 +89,7 @@ function main() {
   engine.update(
     [
       engine.getSystem(s.Display),
+      engine.getSystem(s.DisplayAll),
     ],
     engine.getAllEntities(),
     0,

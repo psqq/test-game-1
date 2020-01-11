@@ -1,5 +1,19 @@
 import * as ecs from "./ecs.js";
 
+export class Gold extends ecs.Component {
+  constructor() {
+    super();
+    this.amount = 0;
+  }
+}
+
+export class Type extends ecs.Component {
+  constructor() {
+    super();
+    this.name = '';
+  }
+}
+
 export class Position extends ecs.Component {
   constructor() {
     super();
