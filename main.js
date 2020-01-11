@@ -31,30 +31,27 @@ function main() {
     make(c.Glyph, o => {
       o.ch = '@';
     }),
-    make(c.Type, o => {
-      o.name = 'player';
-    }),
-    make(ecs.Group, o => {
-      o.name = 'player';
-    }),
+    make(ecs.Group, o => { o.name = 'player'; }),
+    make(ecs.Group, o => { o.name = 'being'; }),
     make(c.Gold, o => {
       o.amount = 0;
     }),
   );
 
   engine.createEntity(
-    make(c.Gold, o => {
-      o.value = 10;
+    make(c.Position, o => {
+      o.x = 5;
+      o.y = 5;
     }),
-    make(c.Move, o => {
-      o.erase();
+    make(c.Gold, o => {
+      o.amount = 10;
     }),
     make(c.Glyph, o => {
-      o.ch = '@';
+      o.ch = '$';
+      o.fg = 'gold';
     }),
-    make(ecs.Group, o => {
-      o.name = 'player';
-    }),
+    make(ecs.Group, o => { o.name = 'gold'; }),
+    make(ecs.Group, o => { o.name = 'not-player'; }),
   );
 
   engine.addSystem(new s.Move());
@@ -83,6 +80,14 @@ function main() {
         player.isNeedUpdate()
       );
     }
+    engine.update(
+      [
+        engine.getSystem(s.Display),
+        engine.getSystem(s.DisplayAll),
+      ],
+      engine.getAllEntities(),
+      0,
+    );
   }
 
   display.clear();

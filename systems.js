@@ -1,5 +1,6 @@
 import * as ecs from "./ecs.js";
 import * as c from "./components.js";
+import BaseSystem from "./base-system.js";
 
 export class Display extends ecs.System {
   constructor(display) {
@@ -37,20 +38,25 @@ export class DisplayAll extends ecs.System {
       this.el.innerText += args.join("");
     };
     for(let e of this.engine.getAllEntities()) {
-      const typeName = e.get(c.Type).name;
+      if (this.el.innerText) {
+        this.el.innerText += "\n";
+      }
+      const typeName = e.get(ecs.Group).name;
       const res = { [typeName]: {
         id: e.id,
-        components: {},
+        components: [],
       }};
       for(let c of e.components) {
-        res[typeName].components[c.constructor.name] = c;
+        res[typeName].components.push({
+          [c.constructor.name]: c,
+        });
       }
       p(JSON.stringify(res, null, 2));
     }
   }
 }
 
-export class Move extends ecs.System {
+export class Move extends BaseSystem {
   /**
    * @param {Entity[]} entities
    * @param {number} deltaTime
@@ -68,6 +74,7 @@ export class Move extends ecs.System {
       pos.x += move.dx;
       pos.y += move.dy;
       move.erase();
+      this.interact(entity, deltaTime);
     }
   }
 }

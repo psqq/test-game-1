@@ -20,6 +20,12 @@ export class Engine {
     }
   }
   /**
+   * @param {Entity} entity
+   */
+  removeEntity(entity) {
+    this.entities.delete(entity.id);
+  }
+  /**
    * @type {System} system
    */
   addSystem(system) {
@@ -35,9 +41,10 @@ export class Engine {
   getEntitiesInGroup(groupName) {
     let result = [];
     for(let e of this.entities.values()) {
-      const g = e.get(Group);
-      if (g.name == groupName) {
-        result.push(e);
+      for(let g of e.gets(Group)) {
+        if (g.name == groupName) {
+          result.push(e);
+        }
       }
     }
     return result;

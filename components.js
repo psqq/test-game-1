@@ -37,8 +37,8 @@ export class Move extends ecs.Component {
 export class Glyph extends ecs.Component {
   constructor() {
     super();
-    this.fg = 0;
-    this.bg = 0;
-    this.ch = ' ';
+    this.fg = "white";
+    this.bg = "black";
+    this.ch = '?';
   }
 }
