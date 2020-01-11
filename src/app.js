@@ -45,7 +45,7 @@ export default class App {
       make(ecs.Group, o => { o.name = 'not-player'; }),
     );
     this.engine.addSystem(new s.Move());
-    this.engine.addSystem(new s.DisplayAll());
+    this.engine.addSystem(new s.DisplayAllInfo());
     this.engine.addSystem(new s.Display(this.display));
     document.addEventListener('keydown', (e) => {
       const dir = getDirectionByKeyboardEvent(e);
@@ -61,7 +61,7 @@ export default class App {
   draw() {
     this.engine.update([
       this.engine.getSystem(s.Display),
-      this.engine.getSystem(s.DisplayAll),
+      this.engine.getSystem(s.DisplayAllInfo),
     ],
       this.engine.getAllEntities(), 0,
     );

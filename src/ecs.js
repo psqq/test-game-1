@@ -169,10 +169,22 @@ export class Component {
   isNeedUpdate() {
     return false;
   }
+  repr() {
+    let s = this.constructor.name + "(";
+    for(let key in this) {
+      if (s[s.length-1] != '(') {
+        s += ', ';
+      }
+      let value = JSON.stringify(this[key]);
+      s += `${key}=${value}`;
+    }
+    return s + ")";
+  }
 }
 
 export class System {
   constructor() {
+    /** @type {Engine} */
     this.engine = null;
   }
   setEngine(engine) {

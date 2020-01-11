@@ -24,7 +24,7 @@ export class Display extends ecs.System {
   }
 }
 
-export class DisplayAll extends ecs.System {
+export class DisplayAllInfo extends ecs.System {
   constructor() {
     super();
     this.el = document.querySelector(".all-info");
@@ -34,28 +34,33 @@ export class DisplayAll extends ecs.System {
    * @param {number} deltaTime
    */
   update(entities, deltaTime) {
-    this.el.innerText = "";
-    const p = (...args) => {
-      this.el.innerText += args.join("");
-    };
+    let s = "";
     for (let e of this.engine.getAllEntities()) {
-      if (this.el.innerText) {
-        this.el.innerText += "\n";
+      if (s != "") {
+        s += "\n";
       }
-      const typeName = e.get(ecs.Group).name;
-      const res = {
-        [typeName]: {
-          id: e.id,
-          components: [],
-        }
-      };
-      for (let c of e.components) {
-        res[typeName].components.push({
-          [c.constructor.name]: c,
-        });
+      // ecs.Group
+      let ident = "";
+      const group = e.get(ecs.Group);
+      if (group) {
+        s += ident;
+        s += `${group.name}:\n`;
       }
-      p(JSON.stringify(res, null, 2));
+      // c.Position
+      ident += "  ";
+      const position = e.get(c.Position);
+      if (position) {
+        s += ident;
+        s += `Position: ${position.repr()}\n`;
+      }
+      // c.Gold
+      const gold = e.get(c.Gold);
+      if (gold) {
+        s += ident;
+        s += `Gold: ${gold.amount}\n`;
+      }
     }
+    this.el.innerText = s;
   }
 }
 
