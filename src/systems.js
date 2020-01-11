@@ -54,6 +54,12 @@ export class DisplayAllInfo extends ecs.System {
         s += `Position: ${position.repr()}\n`;
       }
       // c.Gold
+      const glyph = e.get(c.Glyph);
+      if (glyph) {
+        s += ident;
+        s += `Glyph: ${glyph.repr()}\n`;
+      }
+      // c.Gold
       const gold = e.get(c.Gold);
       if (gold) {
         s += ident;
